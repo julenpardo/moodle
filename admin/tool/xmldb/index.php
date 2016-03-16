@@ -93,11 +93,16 @@ if (file_exists($actionpath) && is_readable($actionpath)) {
                         }
                     }
 
-                    // Go with standard admin header
-                    echo $OUTPUT->header();
-                    echo $OUTPUT->heading($xmldb_action->getTitle());
-                    echo $xmldb_action->getOutput();
-                    echo $OUTPUT->footer();
+                    $downloadhtml = $action === 'generate_documentation' && optional_param('download', 0, PARAM_INT) === 1;
+                    if ($downloadhtml) {
+                        $xmldb_action->download_html();
+                    } else {
+                        // Go with standard admin header
+                        echo $OUTPUT->header();
+                        echo $OUTPUT->heading($xmldb_action->getTitle());
+                        echo $xmldb_action->getOutput();
+                        echo $OUTPUT->footer();
+                    }
                     break;
                 case ACTION_GENERATE_XML:
                     header('Content-type: application/xhtml+xml; charset=utf-8');
